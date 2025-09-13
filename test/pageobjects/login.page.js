@@ -1,41 +1,35 @@
-const { $ } = require('@wdio/globals')
-const Page = require('./page');
+import Page from "../pageobjects/page.js";
 
-/**
- * sub page containing specific selectors and methods for a specific page
- */
 class LoginPage extends Page {
-    /**
-     * define selectors using getter methods
-     */
-    get inputUsername () {
-        return $('#username');
+    //define selectors
+    get emailField() {
+        return $("#email");
     }
 
-    get inputPassword () {
-        return $('#password');
+    get passwordField() {
+        return $("#password");
     }
 
-    get btnSubmit () {
-        return $('button[type="submit"]');
+    get signInBtn() {
+        return $('//*[@id="root"]/main/div/div/div/div/form/button');
     }
 
-    /**
-     * a method to encapsule automation code to interact with the page
-     * e.g. to login using username and password
-     */
-    async login (username, password) {
-        await this.inputUsername.setValue(username);
-        await this.inputPassword.setValue(password);
-        await this.btnSubmit.click();
+    //define methods
+    async login(email, password) {
+        await this.emailField.setValue(email);
+        await this.passwordField.setValue(password);
+        await this.signInBtn.click();
     }
 
-    /**
-     * overwrite specific options to adapt it to page object
-     */
-    open () {
-        return super.open('login');
+    async logout() {
+        await this.NavComponent.logOutBtn.click();
+    }
+
+    open() {
+        return super.open("login");
+        //return Page.prototype.open.call('login'); ---another way to call the class directly---
+        //return Page.open('login'); ---error due to calling a class, not an instance---
     }
 }
 
-module.exports = new LoginPage();
+export default new LoginPage();
