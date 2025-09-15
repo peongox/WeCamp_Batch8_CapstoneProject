@@ -1,0 +1,55 @@
+[
+    {
+        "email": "david@email.com",
+        "password": "Valid@2102",
+        "username": "David Nguyen"
+    },
+    {
+        "email": "random@domain.com",
+        "password": "valid@8512"
+    },
+    {
+        "email": "",
+        "password": ""
+    },
+    {
+        "email": "david@email.com",
+        "password": "iloveyou"
+    },
+    {
+        "email": "david@email.com",
+        "password": "        "
+    },
+    {
+        "email": "david@email.com",
+        "password": "Adam@735"
+    },
+    {
+        "email": "david@email.com",
+        "password": "JohnnyNguyen!"
+    },
+    {
+        "email": "david@",
+        "password": "Valid@2102",
+        "error": "Please enter a part following '@'"
+    },
+    {
+        "email": " ",
+        "password": "Valid@2102"
+    },
+    {
+        "email": "david.com",
+        "password": "Valid@2102",
+        "error":  "Please include an '@' in the email address"
+    },
+    {
+        "email": "david@@example.com",
+        "password": "Valid@2102",
+        "error": "A part following '@' should not contain"
+    },
+    {
+        "email": "david#@example!.com",
+        "password": "Valid@2102",
+        "error":"A part following '@' should not contain"
+    }
+]

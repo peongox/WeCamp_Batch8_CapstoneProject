@@ -14,6 +14,10 @@ class LoginPage extends Page {
         return $('//*[@id="root"]/main/div/div/div/div/form/button');
     }
 
+    get errorMsg() {
+        return $('.Toastify__toast-container--top-right');
+    }
+
     //define methods
     async login(email, password) {
         await this.emailField.setValue(email);

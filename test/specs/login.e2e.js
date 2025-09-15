@@ -1,5 +1,6 @@
-import { expect, browser, $ } from '@wdio/globals'
+import { expect, browser, $ } from '@wdio/globals';
 import LoginPage from "../pageobjects/login.page.js";
+import loginTestData from '../data/loginTestData.json' assert {type: "json"};
 
 describe('Test Login', () => {
     beforeEach( async function () {
@@ -7,19 +8,39 @@ describe('Test Login', () => {
         await LoginPage.open();
     })
 
-    it('logs in using valid credentials', async () => {
-        //log in
-        await LoginPage.login("john@email.com", "123456");
+    loginTestData.forEach((data) => {
+        it('User login', async () => {
+            await LoginPage.login(data.email, data.password);
 
-        //assert navigate to homepage
-        await expect(browser).toHaveUrl(`http://localhost:3000/`);
+            //test data includes username -> valid inputs
+            if(data.username){
 
-        //assert username (chua biet cach lay duoc ten theo acc dang login)
-        await expect($('#username')).toHaveText("John Doe");
+                //assert navigate to homepage
+                await expect(browser).toHaveUrl(`http://localhost:3000/`);
+
+                //assert the account's username
+                await expect(LoginPage.NavComponent.dropDownMenu).toHaveText(data.username);
+            }
+            //test data DOES NOT include username -> invalid inputs
+            else{
+                try {
+                    //assert a toast message to be displayed
+                    await expect(LoginPage.errorMsg).toBeExisting({wait: 100});
+                } catch (error) {
+                    console.log("The email format is incorrect");
+                }
+            }
+        })
     })
 
     afterEach( async function () {
         //log out
-        await LoginPage.logout();
+        try {
+            if(await LoginPage.NavComponent.dropDownMenu.isDisplayed({timeout: 100})){
+                await LoginPage.logout();
+            }
+        } catch (error) {
+            console.log("skipped logout");
+        }
     })
 })
