@@ -14,7 +14,7 @@ class LoginPage extends Page {
         return $('//*[@id="root"]/main/div/div/div/div/form/button');
     }
 
-    get errorMsg() {
+    get toastMsg() {
         return $('.Toastify__toast-container--top-right');
     }
 
