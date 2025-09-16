@@ -1,0 +1,67 @@
+[
+    {
+        "email": "david@email.com",
+        "password": "Valid@2102",
+        "username": "David Nguyen",
+        "expectedStatus": true
+    },
+    {
+        "email": "random@domain.com",
+        "password": "valid@8512",
+        "expectedStatus": false
+    },
+    {
+        "email": "",
+        "password": "",
+        "expectedStatus": false
+    },
+    {
+        "email": "david@email.com",
+        "password": "iloveyou",
+        "expectedStatus": false
+    },
+    {
+        "email": "david@email.com",
+        "password": "        ",
+        "expectedStatus": false
+    },
+    {
+        "email": "david@email.com",
+        "password": "Adam@735",
+        "expectedStatus": false
+    },
+    {
+        "email": "david@email.com",
+        "password": "JohnnyNguyen!",
+        "expectedStatus": false
+    },
+    {
+        "email": "david@",
+        "password": "Valid@2102",
+        "error": "Please enter a part following '@'",
+        "expectedStatus": false
+    },
+    {
+        "email": " ",
+        "password": "Valid@2102",
+        "expectedStatus": false
+    },
+    {
+        "email": "david.com",
+        "password": "Valid@2102",
+        "error":  "Please include an '@' in the email address",
+        "expectedStatus": false
+    },
+    {
+        "email": "david@@example.com",
+        "password": "Valid@2102",
+        "error": "A part following '@' should not contain",
+        "expectedStatus": false
+    },
+    {
+        "email": "david#@example!.com",
+        "password": "Valid@2102",
+        "error":"A part following '@' should not contain",
+        "expectedStatus": false
+    }
+]
