@@ -23,6 +23,11 @@ class NavComponent {
         this.dropDownMenu.click();
         return $('//*[@id="basic-navbar-nav"]/div/div/div/a[2]');
     }
+
+    //define methods (after login/register)
+    async logout () {
+        await this.logOutBtn.click();
+    }
 }
 
 export default new NavComponent();

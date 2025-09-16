@@ -22,7 +22,7 @@ exports.config = {
     //
     specs: [
         //'./test/specs/**/*.js'
-        './test/specs/login.e2e.js'
+        './test/specs/register.e2e.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -51,7 +51,7 @@ exports.config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        browserName: 'chrome'
+        browserName: 'edge'
     }],
 
     //
