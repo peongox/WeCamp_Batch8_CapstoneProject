@@ -21,15 +21,10 @@ class RegisterPage extends Page {
     get registerBtn () {
         return $('//*[@id="root"]/main/div/div/div/div/form/button');
     }
-
-    get toastMsg () {
-        return $('.Toastify__toast-body');
+    get toastMsg() {
+        return $('.Toastify__toast-container--top-right');
     }
-
-    get heading () {
-        return $('#root > main > div > div > div > div > h1');
-    }
-
+    
     //define methods
     async register (name, email, pass, confirmPass) {
         await this.nameField.setValue(name);
