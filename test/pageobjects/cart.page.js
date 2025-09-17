@@ -5,6 +5,9 @@ class CartPage {
     get totalValue () {return $('.col-md-4 .list-group-item')}
     get proceedButton () {return $('.btn-block')}
     get productDetails () {return $$('.col-md-8 .list-group-item .row div')}
+    get cartNavBar () {return $('.nav-link span')}
+    get qtyDropdown () {return $('.row .col-md-2 .form-control')}
+    get bin () {return $('.row .col-md-2 button')}
 
     // Get elements when cart empty
     get cartEmptyAlert () {return $('.col-md-8 .alert-info')}
@@ -13,6 +16,10 @@ class CartPage {
     // Actions
     async clickProceed () {
         await this.proceedButton.click()
+    }
+
+    async removeItem () {
+        await this.bin.click()
     }
 
     async clickReturnHome () {
@@ -27,20 +34,19 @@ class CartPage {
             const cols = await row.$$('div')
 
             const picture = await cols[0].$('img').getAttribute('src'); 
+            const link = await cols[1].$('a').getAttribute('href')
             const name = await cols[1].getText()      
-            const qty = await cols[2].getText()
-            const value = await cols[3].getText()
-            const bin = await cols[4]            
+            const value = await $(cols[2]).getText()          
             
-            details.push[{
+            details.push({
                 picture,
+                link,
                 name,
-                qty,
                 value,
-                bin,
-            }]
+            })
         }  
+        return details
     }
 }
 
-export default CartPage
+export default new CartPage ()
