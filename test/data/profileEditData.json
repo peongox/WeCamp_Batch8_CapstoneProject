@@ -1,0 +1,21 @@
+[
+  { "name": "John Marry",     "email": "newgroup4@gmail.com" },
+  { "name": "John",     "email": "group4@gmai.com" },
+  { "name": "John Mary",               "email": "newgroup4@gmail.com" },
+  { "name": "Group4",               "email": "first_last-name.01@my-wecamp.com.au" },
+  { "name": "John Marry   ",  "email": "group4@gmail.com " },
+  { "name": "Group 4",               "email": "group4@gmail.COM" },
+  { "name": "Group 4",               "email": "group4@gmail.COM" },
+  { "name": "Peter He",     "email": "group4gmail.com" },
+  { "name": "John Marry",     "email": "group4@@gmail.com" },
+  { "name": "John Marry",     "email": "group4@" },
+  { "name": "John Marry",     "email": "@gmail.com" },
+  { "name": "John Marry",     "email": "group4@gmailcom" },
+  { "name": "John Marry",     "email": "group4@.gmail.com"},
+  { "name": "John Marry",     "email": "group4@gmail.com." },
+  { "name": "John Marry",     "email": "gr oup4@g mail.co m" },
+  { "name": "",               "email": "group4@gmail.com" },
+  { "name": "John Marry",        "email": "" },
+  { "name": "   ",            "email": "new@gmail.com" },
+  { "name": "John Marry",        "email": "   " }
+]
