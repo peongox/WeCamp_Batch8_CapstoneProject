@@ -7,7 +7,6 @@ import HomePage from '../pageobjects/home.page.js';
 import ProductSummary from '../pageobjects/product-summary.page.js';
 import CartPage from '../pageobjects/cart.page.js';
 import navComp from '../pageobjects/components/nav.comp.js';
-import homePage from '../pageobjects/home.page.js';
 
 describe ('Test place an order', () => {
     // Login
@@ -21,7 +20,9 @@ describe ('Test place an order', () => {
 
     it ('Should add product to cart successfully', async () => {
         // click product
-        await HomePage.productLinks[0].click() // 1 product
+        const productId = await HomePage.getProductId(0)
+        await HomePage.clickOnProduct(0) // click first product
+        await expect(browser).toHaveUrl(`http://localhost:3000/product/${productId}`)
 
         // check layout product summary
         await expect(browser).toHaveUrl('http://localhost:3000/product/68b01890b91374502e2c79e6')
@@ -88,8 +89,9 @@ describe ('Test place an order', () => {
             await expect(response.data.countInStock).toBe(stockValue)
 
             // click product
-            await HomePage.productLinks[1].waitForDisplayed({ timeout: 5000 })
-            await HomePage.productLinks[1].click()
+            const productId = await HomePage.getProductId(1)
+            await HomePage.productLinks[1].click() // click first product
+            await expect(browser).toHaveUrl(`http://localhost:3000/product/${productId}`)
             
             // check layout product summary 
             await expect(browser).toHaveUrl('http://localhost:3000/product/68b01890b91374502e2c79e7')
@@ -104,7 +106,9 @@ describe ('Test place an order', () => {
 
     it('Should allow changing product quantity in cart', async () => {
         // click product
-        await homePage.productLinks[0].click()
+        const productId = await HomePage.getProductId(0)
+        await HomePage.clickOnProduct(0) // click first product
+        await expect(browser).toHaveUrl(`http://localhost:3000/product/${productId}`)
 
         // add to cart
         await ProductSummary.clickAddToCart()

@@ -8,7 +8,6 @@ import CartPage from '../pageobjects/cart.page.js';
 import CheckoutPage from '../pageobjects/checkout.page.js';
 
 describe ('Test checkout page', () => {
-    let shippingFormEle = '.col-md-6 form'
 
     before(async () => {
         await browser.url('http://localhost:3000/login')
@@ -21,7 +20,9 @@ describe ('Test checkout page', () => {
 
     it ('Should allow checkout when cart is not empty', async () => {
         // click product
-        await HomePage.productLinks[0].click() // 1 product
+        const productId = await HomePage.getProductId(0)
+        await HomePage.clickOnProduct(0) // click first product
+        await expect(browser).toHaveUrl(`http://localhost:3000/product/${productId}`)
 
         // add to cart
         await ProductSummary.clickAddToCart()
@@ -37,7 +38,7 @@ describe ('Test checkout page', () => {
         await expect((CheckoutPage.breadcrumbs)[2]).toHaveText('Payment')
         await expect((CheckoutPage.breadcrumbs)[2]).not.toHaveHref('/shipping')
 
-        let empty = await CheckoutPage.isFormEmpty('.col-md-6 form')
+        let empty = await CheckoutPage.isFormEmpty(await CheckoutPage.shippingForm)
         await expect(empty).toBe(true)
     })
     
@@ -49,7 +50,9 @@ describe ('Test checkout page', () => {
 
     it ('Should allow place order after entering shipping details', async () => {
         // click product
-        await HomePage.productLinks[0].click() // 1 product
+        const productId = await HomePage.getProductId(0)
+        await HomePage.clickOnProduct(0) // click first product
+        await expect(browser).toHaveUrl(`http://localhost:3000/product/${productId}`)
 
         // add to cart
         await ProductSummary.clickAddToCart()
@@ -65,30 +68,36 @@ describe ('Test checkout page', () => {
         await expect((CheckoutPage.breadcrumbs)[2]).toHaveText('Payment')
         await expect((CheckoutPage.breadcrumbs)[2]).not.toHaveHref('/shipping')
 
-        let empty = await CheckoutPage.isFormEmpty('.col-md-6 form')
+        let empty = await CheckoutPage.isFormEmpty(await CheckoutPage.shippingForm)
         await expect(empty).toBe(true)
 
         // fill in shipping details
         for (const data of shippingData) {
-            await CheckoutPage.fillForm(shippingFormEle, data)
+            await CheckoutPage.fillForm(await CheckoutPage.shippingForm, data)
         }
         
         // asert not empty
-        empty = await CheckoutPage.isFormEmpty('.col-md-6 form')
+        empty = await CheckoutPage.isFormEmpty(await CheckoutPage.shippingForm)
         await expect(empty).not.toBe(true)
 
         //proceed to payment
         await CheckoutPage.toNextStep()
-
-        // assertion
         await expect(browser).toHaveUrl('http://localhost:3000/payment')
         await expect(CheckoutPage.breadcrumbs[2]).toHaveHref('/payment')
         await expect(CheckoutPage.title).toHaveText('Payment Method')
+
+        //proceed to place order
+        await CheckoutPage.toNextStep()
+        await expect(browser).toHaveUrl('http://localhost:3000/placeorder')
+        await CheckoutPage.placeOrder()
+        await expect(browser).toHaveUrl(expect.stringContaining('/order/'))
     })
 
     it ('Should block place order when not entering shipping detail', async () => {
         // click product
-        await HomePage.productLinks[0].click() // 1 product
+        const productId = await HomePage.getProductId(0)
+        await HomePage.clickOnProduct(0) // click first product
+        await expect(browser).toHaveUrl(`http://localhost:3000/product/${productId}`)
 
         // add to cart
         await ProductSummary.clickAddToCart()
@@ -104,11 +113,11 @@ describe ('Test checkout page', () => {
         await expect((CheckoutPage.breadcrumbs)[2]).toHaveText('Payment')
         await expect((CheckoutPage.breadcrumbs)[2]).not.toHaveHref('/shipping')
 
-        let empty = await CheckoutPage.isFormEmpty('.col-md-6 form')
+        let empty = await CheckoutPage.isFormEmpty(await CheckoutPage.shippingForm)
 
         if (!empty) {
-            await CheckoutPage.emptyForm(shippingFormEle)
-            empty = await CheckoutPage.isFormEmpty(shippingFormEle)
+            await CheckoutPage.emptyForm(await CheckoutPage.shippingForm)
+            empty = await CheckoutPage.isFormEmpty(await CheckoutPage.shippingForm)
             await expect(empty).toBe(true)
         }
 
