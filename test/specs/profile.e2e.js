@@ -10,7 +10,7 @@ import CartPage from '../pageobjects/cart.page.js';
 import navComp from '../pageobjects/components/nav.comp.js';
 import CheckoutPage from '../pageobjects/checkout.page.js';
 
-describe ('Test profile page', async () => {
+describe ('View order history', async () => {
 
     before(async () => {
         await browser.url('http://localhost:3000/login')
