@@ -1,10 +1,11 @@
 //current order db capped at 90, there has been no new records of new orders, the order returns 500 internal server error
 
 import { $, expect, browser } from '@wdio/globals';
-import checkoutPage from '../pageobjects/checkout.page.js';
+import checkoutPage from '../pageobjects/paypalcheckout.js';
 import orderDetailPage from '../pageobjects/orderDetail.page.js';
 import users from '../data/users.json' with { type: "json" };
 import shippingForm from '../data/shippingForm.json' with { type: "json" };
+import LoginPage from '../pageobjects/login.page.js';
 
 async function prepareForMD() {
     await browser.url('http://localhost:3000/');
@@ -54,10 +55,13 @@ describe('Mark as Delivered', () => {
         await expect(orderDetailPage.MarkasDlvrdBtn).not.toBeDisplayed()
     })
     it('TC_MD_01 Verify that Admin can view Order Details page with "Mark as Delivered" button visible and can click the button to update the order’s delivery status', async () => {
-        await browser.pause(3000)
-        await $('#username').click()
-        await $('//*[@id="basic-navbar-nav"]/div/div/div/a[2]').waitForExist({ timeout: 5000 })
-        await $('//*[@id="basic-navbar-nav"]/div/div/div/a[2]').click()
+        try {
+            if (await LoginPage.NavComponent.dropDownMenu.isDisplayed({ timeout: 200 })) {
+                await LoginPage.logout();
+            }
+        } catch (error) {
+            console.log("skipped logout, user is not logged in");
+        }
         await browser.url('http://localhost:3000/')
         await browser.login(users.admins[0].email, users.admins[0].password)
         await browser.pause(1000)
