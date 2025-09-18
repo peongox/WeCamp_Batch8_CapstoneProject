@@ -17,6 +17,6 @@
     "@wdio/spec-reporter": "^9.19.2"
   },
   "dependencies": {
-    "geckodriver": "^6.0.1"
+    "axios": "^1.12.2"
   }
 }
