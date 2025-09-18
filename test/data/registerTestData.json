@@ -1,0 +1,51 @@
+[
+    {
+        "name": "Adam Smith_2",
+        "email": "userexample.com",
+        "password": "John@7619",
+        "confirm_pass": "John@7619",
+        "expectedStatus": false
+    },
+    {
+        "name": "Adam Smith_3",
+        "email": "user@@example.com",
+        "password": "John@7619",
+        "confirm_pass": "John@7619",
+        "expectedStatus": false
+    },
+    {
+        "name": "Adam Smith_4",
+        "email": "user#@example!.com",
+        "password": "John@7619",
+        "confirm_pass": "John@7619",
+        "expectedStatus": false
+    },
+    {
+        "name": "Adam Smith_5",
+        "email": "test@example.com",
+        "password": "John1!",
+        "confirm_pass": "John1!",
+        "expectedStatus": true
+    },
+    {
+        "name": "Adam Smith_5",
+        "email": "test@example.com",
+        "password": "JohnnyNguyen!",
+        "confirm_pass": "JohnnyNguyen!",
+        "expectedStatus": false
+    },
+    {
+        "name": "Adam Smith_5",
+        "email": "test@example.com",
+        "password": "johnny900@",
+        "confirm_pass": "johnny900@",
+        "expectedStatus": false
+    },
+    {
+        "name": "Adam Smith_6",
+        "email": "test_6@email.com",
+        "password": "2",
+        "confirm_pass": "2",
+        "expectedStatus": false
+    }
+]

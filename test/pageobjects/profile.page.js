@@ -7,8 +7,7 @@ class ProfilePage {
     async viewOrderDetails () {
         await this.detailsBtn.click()
     }
-
-    // not working, use getter orderId instead
+    
     async getOrderDetails () {
         let orderRows = await this.orderDetailsEle
         const orderDetails = []
