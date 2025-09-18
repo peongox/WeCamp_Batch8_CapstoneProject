@@ -77,6 +77,11 @@ describe ('View order history', async () => {
         await browser.url('http://localhost:3000/')
         await expect(browser).toHaveUrl('http://localhost:3000/')
     })
+
+    after(async () => {
+        await navComp.logOutBtn.click()
+        await expect(browser).toHaveUrl('http://localhost:3000/login')
+    })
 })
 
 const updateBtnSel = '#root > main > div > div > div.col-md-3 > form > button';
