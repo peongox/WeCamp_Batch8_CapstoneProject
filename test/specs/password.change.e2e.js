@@ -1,8 +1,19 @@
 
-import { browser, expect } from '@wdio/globals';
+import { $, browser, expect } from '@wdio/globals';
 import ProfilePage from '../pageobjects/profile.page.js';
+import loginTestData from '../data/loginTestData.json';
+import LoginPage from '../pageobjects/login.page.js';
+import navComp from '../pageobjects/components/nav.comp.js';
 
 describe('Change Password', () => {
+  before(async function () {
+          const {email, password} = loginTestData[0]
+          await LoginPage.open();
+          await LoginPage.login(email, password)
+  
+          await expect(browser).toHaveUrl('http://localhost:3000/')
+          await ProfilePage.goToProfilePage();
+      })
   beforeEach(async () => {
     await ProfilePage.goToProfilePage();
   });
@@ -77,4 +88,10 @@ describe('Change Password', () => {
   it('should fail when reusing the current password', async () => {
     await ProfilePage.expectPolicyReject({ pwd: 'Newpass1!', confirm: 'Newpass1!', includes: 'same' });
   });
+  // logout
+  after(async function () {
+      await navComp.logOutBtn.click()
+
+      await expect(browser).toHaveUrl('http://localhost:3000/login')
+  })
 });
