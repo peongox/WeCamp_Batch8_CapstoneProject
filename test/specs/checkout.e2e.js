@@ -1,9 +1,9 @@
 import { expect, browser, $, $$ } from '@wdio/globals';
 import LoginPage from "../pageobjects/login.page.js";
 import loginTestData from '../data/loginTestData.json' assert {type: "json"};
-import shippingData from '../data/shipping data.json' assert {type: "json"}
+import shippingData from '../data/shippingTestData.json' assert {type: "json"}
 import HomePage from '../pageobjects/home.page.js';
-import ProductSummary from '../pageobjects/product-summary.page.js';
+import ProductSummary from '../pageobjects/productSummary.page.js';
 import CartPage from '../pageobjects/cart.page.js';
 import CheckoutPage from '../pageobjects/checkout.page.js';
 
@@ -18,7 +18,7 @@ describe ('Test checkout page', () => {
         await expect(browser).toHaveUrl('http://localhost:3000/')
     })
 
-    it ('Should allow checkout when cart is not empty', async () => {
+    it('Should allow checkout when cart is not empty', async () => {
         // click product
         const productId = await HomePage.getProductId(0)
         await HomePage.clickOnProduct(0) // click first product
@@ -42,13 +42,13 @@ describe ('Test checkout page', () => {
         await expect(empty).toBe(true)
     })
     
-    it ('Should block checkout when cart is empty', async () => {
+    it('Should block checkout when cart is empty', async () => {
         await browser.url('http://localhost:3000/cart')
         await expect(CartPage.cartItems).toBeElementsArrayOfSize(0)
         await expect(CartPage.proceedButton).toBeDisabled()
     })
 
-    it ('Should allow place order after entering shipping details', async () => {
+    it('Should allow place order after entering shipping details', async () => {
         // click product
         const productId = await HomePage.getProductId(0)
         await HomePage.clickOnProduct(0) // click first product
@@ -93,7 +93,7 @@ describe ('Test checkout page', () => {
         await expect(browser).toHaveUrl(expect.stringContaining('/order/'))
     })
 
-    it ('Should block place order when not entering shipping detail', async () => {
+    it('Should block place order when not entering shipping detail', async () => {
         // click product
         const productId = await HomePage.getProductId(0)
         await HomePage.clickOnProduct(0) // click first product

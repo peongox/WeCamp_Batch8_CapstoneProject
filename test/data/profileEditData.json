@@ -17,5 +17,11 @@
   { "name": "",               "email": "group4@gmail.com" },
   { "name": "John Marry",        "email": "" },
   { "name": "   ",            "email": "new@gmail.com" },
-  { "name": "John Marry",        "email": "   " }
+  { "name": "John Marry",        "email": "   " },
+  {
+    "email": "david@email.com",
+    "password": "Valid@2102",
+    "username": "David Nguyen",
+    "expectedStatus": true
+  }
 ]

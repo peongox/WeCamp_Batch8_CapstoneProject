@@ -1,0 +1,20 @@
+{
+    "customers": [
+        {
+            "email": "abc@ddinc.kr",
+            "password": "crt123"
+        }
+    ],
+    "admins": [
+        {
+            "email": "admin@email.com",
+            "password": "123456"
+        }
+    ],
+    "paypal_test": [
+        {
+            "email": "phuthodien1111@personal.example.com",
+            "password": "qwertymnbv"
+        }
+    ]
+}
