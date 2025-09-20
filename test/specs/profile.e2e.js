@@ -1,17 +1,28 @@
 // test/specs/profile.full.e2e.js
 import { $, browser, expect } from '@wdio/globals';
 import ProfilePage from '../pageobjects/profile.page.js';
+import loginTestData from '../data/loginTestData.json';
+import LoginPage from '../pageobjects/login.page.js';
 import data from '../data/profileEditData.json';
+import navComp from '../pageobjects/components/nav.comp.js';
 
 const updateBtnSel = '#root > main > div > div > div.col-md-3 > form > button';
 const successText  = 'Profile updated successfully';
 
 describe('Profile Edit - simple style', () => {
+  before(async function () {
+        const {email, password} = loginTestData[0]
+        await LoginPage.open();
+        await LoginPage.login(email, password)
 
-  beforeEach(async () => {
-    await ProfilePage.goToProfilePage();
-  });
-
+        await expect(browser).toHaveUrl('http://localhost:3000/')
+        await ProfilePage.goToProfilePage();
+    })
+    beforeEach(async () => {
+        await ProfilePage.goToProfilePage();
+      });
+    
+  
   it('Update both name and email (valid)', async () => {
     await ProfilePage.clearAndType(ProfilePage.inputName, data[0].name);
     await ProfilePage.clearAndType(ProfilePage.inputEmail, data[0].email);
@@ -166,4 +177,10 @@ describe('Profile Edit - simple style', () => {
     const msg = await ProfilePage.getValidationMessage('#email');
     await expect(msg.toLowerCase()).toContain('required');
   });
+  // logout
+  after(async function () {
+      await navComp.logOutBtn.click()
+
+      await expect(browser).toHaveUrl('http://localhost:3000/login')
+  })
 });
