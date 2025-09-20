@@ -1,0 +1,703 @@
+{
+	"info": {
+		"_postman_id": "b557a5ff-ae19-453f-a0bd-0f8e1da2d668",
+		"name": "Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31629214",
+		"_collection_link": "https://the-fourths.postman.co/workspace/WeCamp_Batch-8_G4_ProShop~c06305e6-86ab-4d84-bb0b-a16dd75b1658/collection/31629214-b557a5ff-ae19-453f-a0bd-0f8e1da2d668?action=share&source=collection_link&creator=31629214"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/users",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by ID",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Update user by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/users/{id}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/users/{id}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Register a new user - success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains expected properties\", function () {\r",
+									"    pm.expect(jsonData).to.be.an('object');\r",
+									"    pm.expect(jsonData).to.have.property('name').that.exists;\r",
+									"    pm.expect(jsonData).to.have.property('email').that.exists;\r",
+									"    pm.expect(jsonData).to.have.property('password');\r",
+									"    pm.expect(jsonData).to.have.property('isAdmin').that.exist;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body's properties have correct types\", function () {\r",
+									"    pm.expect(jsonData.name).to.be.a('string');\r",
+									"    pm.expect(jsonData.email).to.be.a('string');\r",
+									"    pm.expect(jsonData.password).to.be.a('string');\r",
+									"    pm.expect(jsonData.isAdmin).to.be.a('boolean');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"name\": \"Shizuka\",\r\n \"email\": \"shizuka194@gmail.com\",\r\n \"password\": \"Shizuk@_1994\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/users",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register a new user - unsuccess",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response's message matches api specs\", function (){\r",
+									"    pm.expect(jsonData.message).to.eql(\"User already exists or invalid data\");\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"name\": \"John\",\r\n \"email\": \"test\",\r\n \"password\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/users",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate user & Get token - success",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// let jwtCookie = pm.cookies.get(\"jwt\");\r",
+									"// if (jwtCookie) {\r",
+									"//     // Set the token in globals and environment\r",
+									"//     //pm.globals.set(\"access_token\", jwtCookie);\r",
+									"//     pm.environment.set(\"access_token\", jwtCookie);\r",
+									"// } else {\r",
+									"//     console.warn(\"JWT cookie not found.\");\r",
+									"// }\r",
+									"\r",
+									"pm.environment.set(\"access_token\", pm.cookies.get(\"jwt\"));\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains expected properties\", function () {\r",
+									"    pm.expect(jsonData).to.be.an('object');\r",
+									"    pm.expect(jsonData).to.have.property('email').that.exists;\r",
+									"    pm.expect(jsonData).to.have.property('name').that.exists;\r",
+									"    pm.expect(jsonData).to.have.property('password').that.exist;\r",
+									"    pm.expect(jsonData).to.have.property('isAdmin').that.exist;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body's properties have correct types\", function () {\r",
+									"    pm.expect(jsonData.email).to.be.a('string');\r",
+									"    pm.expect(jsonData.name).to.be.a('string');\r",
+									"    pm.expect(jsonData.password).to.be.a('string');\r",
+									"    pm.expect(jsonData.isAdmin).to.be.a('boolean');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"email\": \"john@email.com\",\r\n \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/users/auth",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate user & Get token - unsuccess",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jwtCookie = pm.cookies.get(\"jwt\");\r",
+									"if (jwtCookie) {\r",
+									"    pm.environment.set(\"access_token\", jwtCookie);\r",
+									"} else {\r",
+									"    console.warn(\"JWT cookie not found.\");\r",
+									"}\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response's message matches api specs\", function (){\r",
+									"    pm.expect(jsonData.message).to.eql(\"Invalid email or password\");\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"email\": \"\",\r\n \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/users/auth",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout user / Clear cookie - success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response's message matches api specs\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"Logged out successfully\");\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Cookie is cleared\", function () {\r",
+									"    pm.expect(pm.cookies.get(\"access_token\")).to.eql(null);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/users/logout",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout user / Clear cookie - unsuccess",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 123abc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/users/logout",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user profile - success",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains expected properties\", function () {\r",
+									"    pm.expect(jsonData).to.be.an('object');\r",
+									"    pm.expect(jsonData).to.have.property('_id').that.exists;\r",
+									"    pm.expect(jsonData).to.have.property('name').that.exists;\r",
+									"    pm.expect(jsonData).to.have.property('email');\r",
+									"    pm.expect(jsonData).to.have.property('isAdmin').that.exist;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body's properties have correct types\", function () {\r",
+									"    pm.expect(jsonData._id).to.be.a('string');\r",
+									"    pm.expect(jsonData.name).to.be.a('string');\r",
+									"    pm.expect(jsonData.email).to.be.a('string');\r",
+									"    pm.expect(jsonData.isAdmin).to.be.a('boolean');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/users/profile",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user profile - unsuccess",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const jar = pm.cookies.jar();\r",
+									"const domain = 'http://localhost:5000';\r",
+									"\r",
+									"jar.set(domain, 'jwt', '123ijk', function (error) {\r",
+									"    if (error) {\r",
+									"        console.log('Error setting cookie: ', error);\r",
+									"    } else {\r",
+									"        console.log('Cookie updated to 123ijk');\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body's message matches api specs\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"Not authorized, token failed\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer jwt=999",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/users/profile",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user profile - success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains expected properties\", function () {\r",
+									"    pm.expect(jsonData).to.be.an('object');\r",
+									"    pm.expect(jsonData).to.have.property('_id').that.exists;\r",
+									"    pm.expect(jsonData).to.have.property('name').that.exists;\r",
+									"    pm.expect(jsonData).to.have.property('email').that.exist;\r",
+									"    pm.expect(jsonData).to.have.property('isAdmin').that.exist;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body's properties have correct types\", function () {\r",
+									"    pm.expect(jsonData._id).to.be.a('string');\r",
+									"    pm.expect(jsonData.name).to.be.a('string');\r",
+									"    pm.expect(jsonData.email).to.be.a('string');\r",
+									"    pm.expect(jsonData.isAdmin).to.be.a('boolean');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"name\":\"John Doe\",\r\n \"email\": \"john@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/users/profile",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user profile - unsuccess",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const jar = pm.cookies.jar();\r",
+									"const domain = 'http://localhost:5000';\r",
+									"\r",
+									"jar.set(domain, 'jwt', '999', function (error) {\r",
+									"    if (error) {\r",
+									"        console.log('Error setting cookie: ', error);\r",
+									"    } else {\r",
+									"        console.log('Cookie updated to 999');\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"name\":\"John Doe\",\r\n \"email\": \"john@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/users/profile",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
