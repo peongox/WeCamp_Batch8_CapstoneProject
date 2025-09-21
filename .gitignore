@@ -35,3 +35,6 @@ build/
 # Temporary files
 tmp/
 temp/
+
+# Export files
+exports
