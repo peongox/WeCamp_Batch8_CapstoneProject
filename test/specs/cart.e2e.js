@@ -2,12 +2,11 @@ import { expect, browser, $, $$ } from '@wdio/globals';
 import axios from 'axios'
 import LoginPage from "../pageobjects/login.page.js";
 import loginTestData from '../data/loginTestData.json' assert {type: "json"};
-import products from '../data/products.json' assert {type: "json"};
+import products from '../data/productsTestData.json' assert {type: "json"};
 import HomePage from '../pageobjects/home.page.js';
-import ProductSummary from '../pageobjects/product-summary.page.js';
+import ProductSummary from '../pageobjects/productSummary.page.js';
 import CartPage from '../pageobjects/cart.page.js';
 import navComp from '../pageobjects/components/nav.comp.js';
-import homePage from '../pageobjects/home.page.js';
 
 describe ('Test place an order', () => {
     // Login
@@ -19,9 +18,11 @@ describe ('Test place an order', () => {
         await expect(browser).toHaveUrl('http://localhost:3000/')
     })
 
-    it ('Should add product to cart successfully', async () => {
+    it('Should add product to cart successfully', async () => {
         // click product
-        await HomePage.productLinks[0].click() // 1 product
+        const productId = await HomePage.getProductId(0)
+        await HomePage.clickOnProduct(0) // click first product
+        await expect(browser).toHaveUrl(`http://localhost:3000/product/${productId}`)
 
         // check layout product summary
         await expect(browser).toHaveUrl('http://localhost:3000/product/68b01890b91374502e2c79e6')
@@ -48,7 +49,7 @@ describe ('Test place an order', () => {
 
         it(`Should block checkout when stock is ${stockValue}`, async () => {
             // update stock value via api
-            const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGIwMTg5MGI5MTM3NDUwMmUyYzc5ZTIiLCJpYXQiOjE3NTgwNDUwMDAsImV4cCI6MTc2MDYzNzAwMH0.DVqs2_RQMsCZASvLucx0cCgybRcf_4aF9gEax5SrTKE';
+            const adminToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGNlYzgyMTk4ZGMzYzYyNTY4Y2NjMjkiLCJpYXQiOjE3NTgzODIxODUsImV4cCI6MTc2MDk3NDE4NX0.sBzf-vbhSFGIXjtej8Fo2VKHBchOv6I4QTBIuTh3M_Y';  
             const payload = {   
                 "productId": "68b01890b91374502e2c79e7",
                 "name": "iPhone 13 Pro 256GB Memory",
@@ -79,7 +80,7 @@ describe ('Test place an order', () => {
                         'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"',
                         'sec-ch-ua-mobile': '?0',
                         'sec-ch-ua-platform': '"Windows"',
-                        'Cookie': `jwt=${token}`
+                        'Cookie': `jwt=${adminToken}`
                     }
                 }
             )
@@ -88,8 +89,9 @@ describe ('Test place an order', () => {
             await expect(response.data.countInStock).toBe(stockValue)
 
             // click product
-            await HomePage.productLinks[1].waitForDisplayed({ timeout: 5000 })
-            await HomePage.productLinks[1].click()
+            const productId = await HomePage.getProductId(1)
+            await HomePage.productLinks[1].click() // click first product
+            await expect(browser).toHaveUrl(`http://localhost:3000/product/${productId}`)
             
             // check layout product summary 
             await expect(browser).toHaveUrl('http://localhost:3000/product/68b01890b91374502e2c79e7')
@@ -104,7 +106,9 @@ describe ('Test place an order', () => {
 
     it('Should allow changing product quantity in cart', async () => {
         // click product
-        await homePage.productLinks[0].click()
+        const productId = await HomePage.getProductId(0)
+        await HomePage.clickOnProduct(0) // click first product
+        await expect(browser).toHaveUrl(`http://localhost:3000/product/${productId}`)
 
         // add to cart
         await ProductSummary.clickAddToCart()

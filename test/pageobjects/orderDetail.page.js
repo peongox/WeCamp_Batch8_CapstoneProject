@@ -2,12 +2,9 @@ import { $, expect } from '@wdio/globals';
 import Page from './page';
 
 class orderDetailPage extends Page {
-    get MarkasDlvrdBtn () {
-        return $('//button[contains(., "Mark As Delivered")]');
-    }
-    get DeliveryStatus () {
-        return $('/html/body/div/main/div/div/div[1]/div/div[1]/div');
-    }
+    get orderId () {return $('.py-3 .container h1')}
+    get MarkasDlvrdBtn () {return $('//button[contains(., "Mark As Delivered")]')}
+    get DeliveryStatus () {return $('/html/body/div/main/div/div/div[1]/div/div[1]/div')}
 
     async clickMarkasDlvrdBtn () {
         await (await this.MarkasDlvrdBtn).click()
