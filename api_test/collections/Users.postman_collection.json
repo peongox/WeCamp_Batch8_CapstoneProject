@@ -14,7 +14,13 @@
 					"name": "Get all users",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{baseURL}}/api/users",
 							"host": [
@@ -32,24 +38,76 @@
 					"name": "Get user by ID",
 					"request": {
 						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
-					"name": "Update user by ID",
-					"request": {
-						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{baseURL}}/api/users/{id}",
+							"raw": "{{baseURL}}/api/users/:id",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"api",
 								"users",
-								"{id}"
+								":id"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68ccf3cc865a67066459f258"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user by ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/users/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68cd8804c3b4b8780d6ece94"
+								}
 							]
 						}
 					},
@@ -59,20 +117,64 @@
 					"name": "Delete user by ID",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{baseURL}}/api/users/{id}",
+							"raw": "{{baseURL}}/api/users/:id",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"api",
 								"users",
-								"{id}"
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
 							]
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{access_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -96,7 +198,7 @@
 									"    pm.expect(jsonData).to.be.an('object');\r",
 									"    pm.expect(jsonData).to.have.property('name').that.exists;\r",
 									"    pm.expect(jsonData).to.have.property('email').that.exists;\r",
-									"    pm.expect(jsonData).to.have.property('password');\r",
+									"    pm.expect(jsonData).to.have.property('password').that.exists;\r",
 									"    pm.expect(jsonData).to.have.property('isAdmin').that.exist;\r",
 									"});\r",
 									"\r",
@@ -108,7 +210,8 @@
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -194,7 +297,8 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						},
 						{
@@ -222,8 +326,8 @@
 									"    pm.expect(jsonData).to.be.an('object');\r",
 									"    pm.expect(jsonData).to.have.property('email').that.exists;\r",
 									"    pm.expect(jsonData).to.have.property('name').that.exists;\r",
-									"    pm.expect(jsonData).to.have.property('password').that.exist;\r",
-									"    pm.expect(jsonData).to.have.property('isAdmin').that.exist;\r",
+									"    pm.expect(jsonData).to.have.property('password').that.exists;\r",
+									"    pm.expect(jsonData).to.have.property('isAdmin').that.exists;\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Response body's properties have correct types\", function () {\r",
@@ -234,7 +338,8 @@
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -660,7 +765,27 @@
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body's message matches api specs\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"Not authorized, token failed\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -698,6 +823,31 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "bearer"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
