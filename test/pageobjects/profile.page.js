@@ -4,17 +4,21 @@ import Page from './page.js';
 
 class ProfilePage extends Page {
   // Selectors
-  get inputName()             { return $('//label[normalize-space()="Name"]/following-sibling::input'); }
-  get inputEmail()            { return $('#email'); }
-  get btnUpdate()             { return $('button=Update'); }
-  get toast()                 { return $('//div[@role="alert" or contains(@class,"toast") or contains(@class,"alert")][1]'); }
-  get lblCurrentPassword()    { return $('//label[normalize-space()="Current Password"]'); }
-  get inputCurrentPassword()  { return $('#currentPassword'); }
-  get inputNewPassword()      { return $('#password'); }
-  get inputConfirmPassword()  { return $('#confirmPassword'); }
+  get inputName()             { return $('#name')}
+  get inputEmail()            { return $('#email')}
+  get btnUpdate()             { return $('button=Update')}
+  get toast()                 { return $('//div[@role="alert" or contains(@class,"toast") or contains(@class,"alert")][1]')}
+  get lblCurrentPassword()    { return $('//label[normalize-space()="Current Password"]')}
+  get inputCurrentPassword()  { return $('#currentPassword')}
+  get inputNewPassword()      { return $('#password')}
+  get inputConfirmPassword()  { return $('#confirmPassword')}
+  get orderHeaders ()         { return $$('.table-sm thead tr th')}
+  get orderDetailsEle ()      { return $$('.table-sm tbody tr')}
+  get orderId ()              { return $('.table-sm tbody tr td')}
+  get detailsBtn ()           { return $('.table-sm tbody a')}
 
   // Utils
-  n(s) { return (s || '').trim().toLowerCase(); }
+  n(s) { return (s || '').trim().toLowerCase()}
 
   // Typing
   async clearAndType(el, text) {
@@ -110,6 +114,32 @@ class ProfilePage extends Page {
   async goToProfilePage() {
     await browser.url('/profile');
     await this.inputNewPassword.waitForDisplayed({ timeout: 10000 });
+  }
+
+  async viewOrderDetails () {
+    await this.detailsBtn.click()
+  }
+    
+  async getOrderDetails () {
+    let orderRows = await this.orderDetailsEle
+    const orderDetails = []
+
+    for (const row of orderRows) {
+        const cols = await row.$$('td')
+
+        const id = await cols[0].getText()
+        const date = await cols[1].getText() 
+        const total = await cols[2].getText() 
+        const link = await cols[5].$('a').getAttribute('href')          
+
+        orderDetails.push({
+            id,
+            date,
+            total,
+            link
+        })
+    }
+    return orderDetails
   }
 }
 

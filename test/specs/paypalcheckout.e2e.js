@@ -1,6 +1,6 @@
 import { $, expect, browser } from '@wdio/globals';
 import checkoutPage from '../pageobjects/paypalcheckout.js';
-import users from '../data/users.json' with { type: "json" };
+import users from '../data/usersPaypalTestData.json' with { type: "json" };
 import shippingForm from '../data/shippingForm.json' with { type: "json" };
 
 async function prepareForCheckout() {

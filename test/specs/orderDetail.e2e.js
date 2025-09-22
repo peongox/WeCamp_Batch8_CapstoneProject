@@ -1,9 +1,8 @@
 //current order db capped at 90, there has been no new records of new orders, the order returns 500 internal server error
-
 import { $, expect, browser } from '@wdio/globals';
 import checkoutPage from '../pageobjects/paypalcheckout.js';
 import orderDetailPage from '../pageobjects/orderDetail.page.js';
-import users from '../data/users.json' with { type: "json" };
+import users from '../data/usersPaypalTestData.json' with { type: "json" };
 import shippingForm from '../data/shippingForm.json' with { type: "json" };
 import LoginPage from '../pageobjects/login.page.js';
 
