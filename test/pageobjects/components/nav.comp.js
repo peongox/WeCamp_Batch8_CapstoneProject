@@ -1,3 +1,4 @@
+import { $, $$ } from '@wdio/globals';
 class NavComponent {
     //define selectors
     get cartBtn () {

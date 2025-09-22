@@ -36,7 +36,7 @@ browser.addCommand('addRandomProducts', async function () {
         throw new Error('No products found on the page.');
     }
 
-    console.log('🥵🥵🥵', `Adding ${numProductsToAdd} random products to the cart..`);
+    console.log(`Adding ${numProductsToAdd} random products to the cart..`);
 
     for (let i = 0; i < numProductsToAdd; i++) {
         const randomIndex = getRandomInt(productCards.length);

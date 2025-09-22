@@ -18,7 +18,7 @@ class ProfilePage extends Page {
   get detailsBtn ()           { return $('.table-sm tbody a')}
 
   // Utils
-  n(s) { return (s || '').trim().toLowerCase()}
+  n(s) { return (s || '').trim().toLowerCase(); }
 
   // Typing
   async clearAndType(el, text) {
