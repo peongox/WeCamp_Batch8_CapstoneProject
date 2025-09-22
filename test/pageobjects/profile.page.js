@@ -4,7 +4,7 @@ import Page from './page.js';
 
 class ProfilePage extends Page {
   // Selectors
-  get inputName()             { return $('//label[normalize-space()="Name"]/following-sibling::input')}
+  get inputName()             { return $('#name')}
   get inputEmail()            { return $('#email')}
   get btnUpdate()             { return $('button=Update')}
   get toast()                 { return $('//div[@role="alert" or contains(@class,"toast") or contains(@class,"alert")][1]')}
