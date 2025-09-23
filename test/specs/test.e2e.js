@@ -35,9 +35,23 @@ describe ('Test E2E', async () => {
         
         await $('//button[text()="Continue"]').click()
         await $('//button[text()="Continue"]').click()
+        await browser.setupInterceptor()
         await $('//button[text()="Place Order"]').click()
 
-        await expect(browser).toHaveUrl(/http:\/\/localhost:3000\/order\/.+/)
+        await browser.waitUntil(
+            async () => (await browser.getUrl()).includes('/order/'),
+            {
+                timeout: 5000,
+                timeoutMsg: 'Expected to be on order detail page within 5s'
+            }
+        )
+
+        await browser.expectRequest('POST', '/api/orders', 201)
+        let creatOrderReq = await browser.getRequest(0)
+        orderId = creatOrderReq.response.body._id
+        console.log('look', orderId)
+
+        await expect(browser).toHaveUrl(`http://localhost:3000/order/${orderId}`)
 
         // pay order
         const savedTotalAmount = await checkoutPage.getTotalAmount();
