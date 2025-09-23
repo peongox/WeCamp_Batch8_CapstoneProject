@@ -17,7 +17,8 @@
     "@wdio/mocha-framework": "^9.19.2",
     "@wdio/spec-reporter": "^9.19.2",
     "newman": "^6.2.1",
-    "newman-reporter-htmlextra": "^1.23.1"
+    "newman-reporter-htmlextra": "^1.23.1",
+    "wdio-intercept-service": "^4.4.1"
   },
   "dependencies": {
     "axios": "^1.12.2"

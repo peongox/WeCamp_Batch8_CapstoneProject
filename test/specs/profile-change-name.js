@@ -1,27 +1,32 @@
-// test/specs/profile.full.e2e.js
-import { $, browser, expect } from '@wdio/globals';
 import ProfilePage from '../pageobjects/profile.page.js';
-import loginTestData from '../data/loginTestData.json';
-import LoginPage from '../pageobjects/login.page.js';
 import data from '../data/profileEditData.json';
+import {expect, browser, $, $$ } from '@wdio/globals';
 import navComp from '../pageobjects/components/nav.comp.js';
+import RegisterPage from '../pageobjects/register.page.js';
+import axios from 'axios'
 
-const updateBtnSel = '#root > main > div > div > div.col-md-3 > form > button';
-const successText  = 'Profile updated successfully';
+describe('Profile - Edit name', () => {
+    const updateBtnSel = '#root > main > div > div > div.col-md-3 > form > button';
+    const successText  = 'Profile updated successfully';    
+    let userId = '';
 
-describe('Profile Edit - simple style', () => {
-  before(async function () {
-        const {email, password} = loginTestData[0]
-        await LoginPage.open();
-        await LoginPage.login(email, password)
+    before(async function () {
+        await browser.url('http://localhost:3000/register?redirect=/')
+        browser.setupInterceptor()
+        await RegisterPage.register(Date.now(),`${Date.now()}@mail.com`,'Valid@2102','Valid@2102')
+        await browser.pause(3000)
+
+        browser.expectRequest('POST', '/api/users', 201)
+        let createUserReq = await browser.getRequest(0)
+        userId = createUserReq.response.body._id
 
         await expect(browser).toHaveUrl('http://localhost:3000/')
         await ProfilePage.goToProfilePage();
     })
+
     beforeEach(async () => {
         await ProfilePage.goToProfilePage();
-      });
-    
+    });
   
   it('Update both name and email (valid)', async () => {
     await ProfilePage.clearAndType(ProfilePage.inputName, data[0].name);
@@ -177,10 +182,34 @@ describe('Profile Edit - simple style', () => {
     const msg = await ProfilePage.getValidationMessage('#email');
     await expect(msg.toLowerCase()).toContain('required');
   });
-  // logout
-  after(async function () {
-      await navComp.logOutBtn.click()
 
+  after(async function () {
+      // logout
+      await navComp.logOutBtn.click()
       await expect(browser).toHaveUrl('http://localhost:3000/login')
+      
+      // delete created user
+        const adminToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGNlYzgyMTk4ZGMzYzYyNTY4Y2NjMjkiLCJpYXQiOjE3NTgzODIxODUsImV4cCI6MTc2MDk3NDE4NX0.sBzf-vbhSFGIXjtej8Fo2VKHBchOv6I4QTBIuTh3M_Y';  
+        await axios.delete(
+            `http://localhost:3000/api/users/${userId}`,
+            {
+                headers: {
+                    'Accept': '*/*',
+                    'Accept-Language': 'en-US,en;q=0.9,vi;q=0.8',
+                    'Connection': 'keep-alive',
+                    'DNT': '1',
+                    'Origin': 'http://localhost:3000',
+                    'Referer': 'http://localhost:3000/admin/userlist',
+                    'Sec-Fetch-Dest': 'empty',
+                    'Sec-Fetch-Mode': 'cors',
+                    'Sec-Fetch-Site': 'same-origin',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
+                    'sec-ch-ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"',
+                    'sec-ch-ua-mobile': '?0',
+                    'sec-ch-ua-platform': '"Windows"',
+                    'Cookie': `jwt=${adminToken}`
+                }
+            }
+        )
   })
-});
+})
